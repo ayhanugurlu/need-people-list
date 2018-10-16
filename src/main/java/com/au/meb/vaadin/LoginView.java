@@ -6,12 +6,14 @@ import com.au.meb.dto.UserDTO;
 import com.au.meb.service.UserService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by ayhanugurlu on 10/13/18.
  */
+@SpringView
 public class LoginView extends VerticalLayout implements View {
     public static final String NAME = "LoginView";
 
@@ -20,9 +22,9 @@ public class LoginView extends VerticalLayout implements View {
 
     private Label userNameLabel = new Label("Email");
     private TextField userNameInput = new TextField();
-    private Label passwordLabel = new Label("Email");
-    private Label passwordInput = new Label("Email");
-    private Button loginButton = new Button();
+    private Label passwordLabel = new Label("Password");
+    private TextField passwordInput = new TextField();
+    private Button loginButton = new Button("Login");
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -34,12 +36,12 @@ public class LoginView extends VerticalLayout implements View {
 
     public void buildPage(){
         HorizontalLayout userNameLayout = new HorizontalLayout();
-        userNameLayout.addComponentsAndExpand(userNameLabel,userNameInput);
+        userNameLayout.addComponents(userNameLabel,userNameInput);
 
         HorizontalLayout passwordLayout = new HorizontalLayout();
-        passwordLayout.addComponentsAndExpand(passwordLabel,passwordInput);
+        passwordLayout.addComponents(passwordLabel,passwordInput);
 
-        this.addComponentsAndExpand(userNameLayout,passwordLayout);
+        this.addComponents(userNameLayout,passwordLayout);
         this.addComponent(loginButton);
         this.setComponentAlignment(userNameLayout, Alignment.BOTTOM_CENTER);
         this.setComponentAlignment(passwordLayout, Alignment.BOTTOM_CENTER);

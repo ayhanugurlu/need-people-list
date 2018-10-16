@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by ayhanugurlu on 10/13/18.
  */
 
-@SpringUI(path = "assessment")
+@SpringUI(path = "application")
 public class NeedPeopleUI extends UI {
 
 
