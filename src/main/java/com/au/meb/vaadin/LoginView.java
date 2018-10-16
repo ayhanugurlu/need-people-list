@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by ayhanugurlu on 10/13/18.
  */
-@SpringView
+@SpringView(name = LoginView.NAME)
 public class LoginView extends VerticalLayout implements View {
     public static final String NAME = "LoginView";
 
