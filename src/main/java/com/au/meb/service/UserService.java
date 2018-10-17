@@ -11,5 +11,7 @@ public interface UserService {
 
     UserDTO login(String username, String password) throws AuthenticationException;
 
+    void save(UserDTO user);
+
 
 }

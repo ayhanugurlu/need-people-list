@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.List;
 
 /**
  * Created by ayhanugurlu on 10/15/18.
@@ -29,7 +28,12 @@ public class NeedPeople {
 
     private String surname;
 
+    private String address;
+
     private String needs;
+
+    //active true
+    private boolean state;
 
 
 

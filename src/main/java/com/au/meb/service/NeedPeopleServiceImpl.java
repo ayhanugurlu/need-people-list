@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -37,9 +38,19 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
     public List<NeedPeopleDTO> list() {
 
         List<NeedPeople>  needPeoples = needPeopleRepository.findAll();
-        List<NeedPeopleDTO> needPeopleDTOS =   needPeoples.stream().map(needPeople -> {
+        List<NeedPeopleDTO> needPeopleDTOS =   needPeoples.stream().filter(needPeople -> !needPeople.isState()).map(needPeople -> {
             return mapperFacade.map(needPeople,NeedPeopleDTO.class);
         }).collect(Collectors.toList());
         return needPeopleDTOS;
+    }
+
+    @Override
+    public void complete(long id) {
+        Optional<NeedPeople> needPeople = needPeopleRepository.findById(id);
+        needPeople.ifPresent(needPeople1 -> {
+            needPeople1.setState(true);
+            needPeopleRepository.save(needPeople1);
+        });
+
     }
 }

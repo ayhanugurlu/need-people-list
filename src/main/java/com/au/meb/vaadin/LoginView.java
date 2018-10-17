@@ -20,11 +20,10 @@ public class LoginView extends VerticalLayout implements View {
     @Autowired
     UserService userService;
 
-    private Label userNameLabel = new Label("Email");
-    private TextField userNameInput = new TextField();
-    private Label passwordLabel = new Label("Password");
-    private TextField passwordInput = new TextField();
-    private Button loginButton = new Button("Login");
+
+    private TextField userNameInput = new TextField("Kullanici Adi");
+    private PasswordField passwordInput = new PasswordField("Sifre");
+    private Button loginButton = new Button("Giris");
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -35,17 +34,12 @@ public class LoginView extends VerticalLayout implements View {
 
 
     public void buildPage(){
-        HorizontalLayout userNameLayout = new HorizontalLayout();
-        userNameLayout.addComponents(userNameLabel,userNameInput);
-
-        HorizontalLayout passwordLayout = new HorizontalLayout();
-        passwordLayout.addComponents(passwordLabel,passwordInput);
-
-        this.addComponents(userNameLayout,passwordLayout);
-        this.addComponent(loginButton);
-        this.setComponentAlignment(userNameLayout, Alignment.BOTTOM_CENTER);
-        this.setComponentAlignment(passwordLayout, Alignment.BOTTOM_CENTER);
-        this.setComponentAlignment(loginButton, Alignment.BOTTOM_CENTER);
+        FormLayout formLayout = new FormLayout();
+        this.setSizeFull();
+        formLayout.setWidthUndefined();
+        this.addComponent(formLayout);
+        formLayout.addComponents(userNameInput,passwordInput,loginButton);
+        this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
 
         loginButton.addClickListener(action ->{
             String username = userNameInput.getValue();

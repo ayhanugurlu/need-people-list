@@ -12,4 +12,6 @@ public interface NeedPeopleService {
     void save(NeedPeopleDTO needPeople);
 
     List<NeedPeopleDTO> list();
+
+    void complete(long id);
 }

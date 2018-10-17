@@ -1,6 +1,5 @@
 package com.au.meb.vaadin;
 
-import com.au.meb.db.NeedPeople;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.service.NeedPeopleService;
 import com.vaadin.navigator.View;
@@ -20,13 +19,13 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
     @Autowired
     NeedPeopleService needPeopleService;
 
-    Label needPersonNameLabel = new Label("Ihtiyac Sahibi Adi");
-    TextField needPersonNameText = new TextField();
-    Label needPersonSurnameLabel = new Label("Ihtiyac Sahibi Soyadi");
-    TextField needPersonSurnameText = new TextField();
-    Label needListLabel = new Label("Ihtiyac Listesi");
-    TextArea needListText = new TextArea();
-    private Button loginButton = new Button("Save");
+
+    TextField needPersonNameText = new TextField("Ihtiyac Sahibi Adi");
+
+    TextField needPersonSurnameText = new TextField("Ihtiyac Sahibi Soyadi");
+    TextArea needPersonAddress = new TextArea("Adress");
+    TextArea needListText = new TextArea("Ihtiyac Listesi");
+    private Button saveButton = new Button("Save");
 
     private Button listPageButton = new Button("ListPage");
 
@@ -38,34 +37,41 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
     }
 
     private void buildPage() {
-        HorizontalLayout personNameLayout = new HorizontalLayout();
-        personNameLayout.addComponents(needPersonNameLabel,needPersonNameText);
-        HorizontalLayout personSurnameLayout = new HorizontalLayout();
-        personNameLayout.addComponents(needPersonSurnameLabel,needPersonSurnameText);
-        HorizontalLayout listLayout = new HorizontalLayout();
-        listLayout.addComponents(needListLabel,needListText);
-        this.addComponent(listPageButton);
-        this.addComponent(personNameLayout);
-        this.addComponent(personSurnameLayout);
-        this.addComponent(listLayout);
-        this.addComponent(loginButton);
 
-        loginButton.addClickListener(new Button.ClickListener() {
+        FormLayout formLayout = new FormLayout();
+        this.setSizeFull();
+        formLayout.setWidthUndefined();
+        formLayout.addComponents(listPageButton, needPersonNameText, needPersonSurnameText, needPersonAddress, needListText, saveButton);
+        this.addComponent(formLayout);
+        this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
+
+        saveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                NeedPeopleDTO needPeopleDTO =  NeedPeopleDTO.builder().name(needPersonNameText.getValue()).surname(needPersonSurnameText.getValue()).needs(needListText.getValue()).build();
-                needPeopleService.save(needPeopleDTO);
-                needPersonNameText.setValue("");
-                needPersonSurnameText.setValue("");
-                needListText.setValue("");
-                Notification.show("Kayit Eklendi", Notification.Type.HUMANIZED_MESSAGE);
+                if (needPersonNameText.getValue() != null && needPersonNameText.getValue().trim().length() > 0
+                        && needPersonSurnameText.getValue() != null && needPersonSurnameText.getValue().trim().length() > 0
+                        && needPersonAddress.getValue() != null && needPersonAddress.getValue().trim().length() > 0
+                        && needListText.getValue() != null && needListText.getValue().trim().length() > 0
+                        ) {
+                    NeedPeopleDTO needPeopleDTO = NeedPeopleDTO.builder().name(needPersonNameText.getValue()).surname(needPersonSurnameText.getValue()).address(needPersonAddress.getValue())
+                            .needs(needListText.getValue()).build();
+                    needPeopleService.save(needPeopleDTO);
+                    needPersonNameText.setValue("");
+                    needPersonSurnameText.setValue("");
+                    needListText.setValue("");
+                    needPersonAddress.setValue("");
+                    Notification.show("Kayit Eklendi", Notification.Type.HUMANIZED_MESSAGE);
+                } else {
+                    Notification.show("Tum alanlar dolu olmali", Notification.Type.HUMANIZED_MESSAGE);
+                }
+
             }
         });
 
         listPageButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                ((NeedPeopleUI)UI.getCurrent()).router(NeedPeopleListView.NAME);
+                ((NeedPeopleUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
             }
         });
     }

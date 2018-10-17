@@ -1,31 +1,15 @@
 package com.au.meb.vaadin;
 
 import com.au.meb.common.AuthrityType;
-import com.au.meb.common.Constant;
-import com.au.meb.db.NeedPeople;
-import com.au.meb.db.NeedPeopleRepository;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.dto.UserDTO;
 import com.au.meb.service.NeedPeopleService;
-import com.au.meb.service.NeedPeopleServiceImpl;
-import com.vaadin.data.provider.AbstractDataProvider;
-import com.vaadin.data.provider.DataProvider;
-import com.vaadin.data.provider.Query;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Created by ayhanugurlu on 10/13/18.
@@ -48,20 +32,52 @@ public class NeedPeopleListView extends VerticalLayout implements View {
     }
 
     private void buildPage() {
-        this.addComponent(needListGrid);
+
+        FormLayout formLayout = new FormLayout();
+        this.setSizeFull();
+        this.addComponent(formLayout);
+        formLayout.setWidthUndefined();
+
+        Button loginButton = new Button("Yonetici Girisi");
+        loginButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                ((NeedPeopleUI)UI.getCurrent()).router(LoginView.NAME);
+            }
+        });
+        formLayout.addComponent(loginButton);
+        formLayout.addComponent(needListGrid);
+        this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
         needListGrid.setItems(needPeopleService.list());
-        needListGrid.addColumn(NeedPeopleDTO::getId);
+        needListGrid.addColumn(NeedPeopleDTO::getId).setCaption("Id");
 
 
         UserDTO userDTO = UI.getCurrent().getSession().getAttribute(UserDTO.class);
-        if(userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN){
-            needListGrid.addColumn(NeedPeopleDTO::getName);
-            needListGrid.addColumn(NeedPeopleDTO::getSurname);
-            
 
+        needListGrid.addColumn(NeedPeopleDTO::getAddress).setCaption("Adress");
+        needListGrid.addColumn(NeedPeopleDTO::getNeeds).setCaption("Ihtiyac Listesi");
+
+        if(userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN){
+            needListGrid.addColumn(NeedPeopleDTO::getName).setCaption("Isim");
+
+            needListGrid.addColumn(NeedPeopleDTO::getSurname).setCaption("Soyisim");
+
+            needListGrid.addComponentColumn(needPeopleDTO -> {
+                Button complete = new Button("Tamamla");
+                complete.addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        needPeopleService.complete(needPeopleDTO.getId());
+                        ((ListDataProvider)needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
+                        needListGrid.getDataProvider().refreshAll();
+                        Notification.show("Kayit Tamamlandi",Notification.Type.HUMANIZED_MESSAGE);
+                    }
+                });
+                return complete;
+            });
 
         }
-        needListGrid.addColumn(NeedPeopleDTO::getNeeds);
+
     }
 
 }

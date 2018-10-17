@@ -1,13 +1,9 @@
 package com.au.meb.vaadin;
 
 
-import com.au.meb.common.AuthrityType;
-import com.au.meb.common.Constant;
 import com.au.meb.dto.UserDTO;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.UI;
