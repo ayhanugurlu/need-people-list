@@ -42,18 +42,8 @@ public class NeedPeopleUI extends UI {
         navigator.addView(ErrorView.NAME, ErrorView.class);
 
 
-        if(UI.getCurrent().getSession().getAttribute(Constant.USER_INFO)!= null){
-            UserDTO userDTO = (UserDTO) UI.getCurrent().getSession().getAttribute(Constant.USER_INFO);
-            if(userDTO.getAuthority() == AuthrityType.ADMIN){
-                router(NeedPeopleSaveView.NAME);
-            }else{
-                router(NeedPeopleListView.NAME);
-            }
-
-
-        }else{
-            router(LoginView.NAME);
-        }
+        UserDTO userDTO = UI.getCurrent().getSession().getAttribute(UserDTO.class);
+        router(NeedPeopleListView.NAME);
 
     }
 

@@ -55,6 +55,10 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent event) {
                 NeedPeopleDTO needPeopleDTO =  NeedPeopleDTO.builder().name(needPersonNameText.getValue()).surname(needPersonSurnameText.getValue()).needs(needListText.getValue()).build();
                 needPeopleService.save(needPeopleDTO);
+                needPersonNameText.setValue("");
+                needPersonSurnameText.setValue("");
+                needListText.setValue("");
+                Notification.show("Kayit Eklendi", Notification.Type.HUMANIZED_MESSAGE);
             }
         });
 

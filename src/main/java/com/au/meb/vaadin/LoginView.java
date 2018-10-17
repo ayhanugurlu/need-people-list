@@ -52,6 +52,7 @@ public class LoginView extends VerticalLayout implements View {
             String password = passwordInput.getValue();
             try {
                 UserDTO userDTO =  userService.login(username,password);
+                UI.getCurrent().getSession().setAttribute(UserDTO.class,userDTO);
                 if(userDTO.getAuthority() == AuthrityType.ADMIN){
                     ((NeedPeopleUI)UI.getCurrent()).router(NeedPeopleSaveView.NAME);
                 }else{
