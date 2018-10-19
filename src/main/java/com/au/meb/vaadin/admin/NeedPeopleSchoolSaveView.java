@@ -1,18 +1,23 @@
-package com.au.meb.vaadin;
+package com.au.meb.vaadin.admin;
 
+import com.au.meb.common.Gender;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.service.NeedPeopleService;
+import com.au.meb.vaadin.NeedPeopleListView;
+import com.au.meb.vaadin.NeedPeopleUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+
 /**
  * Created by ayhanugurlu on 10/13/18.
  */
-@SpringView(name = NeedPeopleSaveView.NAME)
-public class NeedPeopleSaveView extends VerticalLayout implements View {
+@SpringView(name = NeedPeopleSchoolSaveView.NAME)
+public class NeedPeopleSchoolSaveView extends VerticalLayout implements View {
     public static final String NAME = "NeedPeopleSaveView";
 
 
@@ -21,12 +26,11 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
 
 
     TextField needPersonNameText = new TextField("Ihtiyac Sahibi Adi");
-
     TextField needPersonSurnameText = new TextField("Ihtiyac Sahibi Soyadi");
     TextArea needPersonAddress = new TextArea("Adress");
     TextArea needListText = new TextArea("Ihtiyac Listesi");
-    private Button saveButton = new Button("Save");
 
+    private Button saveButton = new Button("Save");
     private Button listPageButton = new Button("ListPage");
 
     @Override

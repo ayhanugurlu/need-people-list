@@ -1,5 +1,7 @@
 package com.au.meb.db;
 
+import com.au.meb.common.Gender;
+import com.au.meb.common.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +30,17 @@ public class NeedPeople {
 
     private String surname;
 
+    private int age;
+
+    private String schoolName;
+
     private String address;
+
+    private Gender gender;
+
+    private Size size;
+
+    private int footSize;
 
     private String needs;
 

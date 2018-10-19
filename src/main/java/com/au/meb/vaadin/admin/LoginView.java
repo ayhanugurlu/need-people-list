@@ -1,9 +1,12 @@
-package com.au.meb.vaadin;
+package com.au.meb.vaadin.admin;
 
 import com.au.meb.common.AuthrityType;
 import com.au.meb.common.exception.AuthenticationException;
 import com.au.meb.dto.UserDTO;
 import com.au.meb.service.UserService;
+import com.au.meb.vaadin.NeedPeopleAdminUI;
+import com.au.meb.vaadin.NeedPeopleListView;
+import com.au.meb.vaadin.NeedPeopleUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
@@ -33,26 +36,21 @@ public class LoginView extends VerticalLayout implements View {
     }
 
 
-    public void buildPage(){
+    public void buildPage() {
         FormLayout formLayout = new FormLayout();
         this.setSizeFull();
         formLayout.setWidthUndefined();
         this.addComponent(formLayout);
-        formLayout.addComponents(userNameInput,passwordInput,loginButton);
+        formLayout.addComponents(userNameInput, passwordInput, loginButton);
         this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
 
-        loginButton.addClickListener(action ->{
+        loginButton.addClickListener(action -> {
             String username = userNameInput.getValue();
             String password = passwordInput.getValue();
             try {
-                UserDTO userDTO =  userService.login(username,password);
-                UI.getCurrent().getSession().setAttribute(UserDTO.class,userDTO);
-                if(userDTO.getAuthority() == AuthrityType.ADMIN){
-                    ((NeedPeopleUI)UI.getCurrent()).router(NeedPeopleSaveView.NAME);
-                }else{
-                    ((NeedPeopleUI)UI.getCurrent()).router(NeedPeopleListView.NAME);
-                }
-
+                UserDTO userDTO = userService.login(username, password);
+                UI.getCurrent().getSession().setAttribute(UserDTO.class, userDTO);
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleMenuView.NAME);
             } catch (AuthenticationException e) {
                 Notification.show("Gecersiz kullanici adi password", Notification.Type.ERROR_MESSAGE);
             }
