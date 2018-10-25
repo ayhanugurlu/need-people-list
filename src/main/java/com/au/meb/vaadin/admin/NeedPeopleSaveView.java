@@ -1,12 +1,13 @@
 package com.au.meb.vaadin.admin;
 
 import com.au.meb.common.Gender;
+import com.au.meb.common.RecordState;
 import com.au.meb.common.Size;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.service.NeedPeopleService;
+import com.au.meb.vaadin.NeedPeopleAdminUI;
 import com.au.meb.vaadin.NeedPeopleListView;
 import com.au.meb.vaadin.NeedPeopleUI;
-import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -53,16 +54,19 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
             @Override
             public void valueChange(HasValue.ValueChangeEvent<String> event) {
                 try {
-                    new Integer(event.getValue());
+                    if(event.getValue().length() > 0 ){
+                        new Integer(event.getValue());
+                    }
+
                 } catch (Exception e) {
-                    ((TextField) event.getComponent()).setValue(event.getOldValue());
+                    ((TextField) event.getComponent()).setValue("");
                 }
 
 
             }
         };
         age.addValueChangeListener(valueChangeListener);
-        schoolName.addValueChangeListener(valueChangeListener);
+        footSize.addValueChangeListener(valueChangeListener);
 
         FormLayout formLayout = new FormLayout();
         this.setSizeFull();
@@ -86,7 +90,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
                     NeedPeopleDTO needPeopleDTO = NeedPeopleDTO.builder().name(needPersonNameText.getValue()).surname(needPersonSurnameText.getValue()).schoolName(schoolName.getValue()).
                             gender(genderRadioButtonGroup.getSelectedItem().get()).address(needPersonAddress.getValue()).
                             size(sizeRadioButtonGroup.getSelectedItem().get()).age(new Integer(age.getValue())).gender(genderRadioButtonGroup.getSelectedItem().get()).footSize(new Integer(footSize.getValue()))
-                            .needs(needListText.getValue()).build();
+                            .needs(needListText.getValue()).state(RecordState.ACTIVE).build();
                     needPeopleService.save(needPeopleDTO);
                     needPersonNameText.clear();
                     needPersonSurnameText.clear();
@@ -108,7 +112,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
         listPageButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                ((NeedPeopleUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
             }
         });
     }

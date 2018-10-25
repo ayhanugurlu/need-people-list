@@ -1,5 +1,6 @@
 package com.au.meb.service;
 
+import com.au.meb.common.RecordState;
 import com.au.meb.dto.NeedPeopleDTO;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public interface NeedPeopleService {
 
     void save(NeedPeopleDTO needPeople);
 
-    List<NeedPeopleDTO> list();
+    List<NeedPeopleDTO> list(RecordState state);
 
-    void complete(long id);
+    void updateComplete(long id, RecordState recordState);
+
 }

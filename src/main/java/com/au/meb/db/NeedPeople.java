@@ -1,6 +1,7 @@
 package com.au.meb.db;
 
 import com.au.meb.common.Gender;
+import com.au.meb.common.RecordState;
 import com.au.meb.common.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,9 +45,6 @@ public class NeedPeople {
 
     private String needs;
 
-    //active true
-    private boolean state;
-
-
+    private RecordState state;
 
 }

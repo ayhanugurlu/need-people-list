@@ -1,5 +1,6 @@
 package com.au.meb.service;
 
+import com.au.meb.common.RecordState;
 import com.au.meb.db.NeedPeople;
 import com.au.meb.db.NeedPeopleRepository;
 import com.au.meb.dto.NeedPeopleDTO;
@@ -35,22 +36,22 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
     }
 
     @Override
-    public List<NeedPeopleDTO> list() {
+    public List<NeedPeopleDTO> list(RecordState query) {
 
-        List<NeedPeople>  needPeoples = needPeopleRepository.findAll();
-        List<NeedPeopleDTO> needPeopleDTOS =   needPeoples.stream().filter(needPeople -> !needPeople.isState()).map(needPeople -> {
+        List<NeedPeople>  needPeoples = needPeopleRepository.findByState(query);
+        List<NeedPeopleDTO> needPeopleDTOS =   needPeoples.stream().map(needPeople -> {
             return mapperFacade.map(needPeople,NeedPeopleDTO.class);
         }).collect(Collectors.toList());
         return needPeopleDTOS;
     }
 
     @Override
-    public void complete(long id) {
+    public void updateComplete(long id,RecordState recordState) {
         Optional<NeedPeople> needPeople = needPeopleRepository.findById(id);
         needPeople.ifPresent(needPeople1 -> {
-            needPeople1.setState(true);
+            needPeople1.setState(recordState);
             needPeopleRepository.save(needPeople1);
         });
-
     }
+
 }

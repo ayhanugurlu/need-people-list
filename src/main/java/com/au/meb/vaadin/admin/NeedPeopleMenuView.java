@@ -1,10 +1,13 @@
 package com.au.meb.vaadin.admin;
 
+
+import com.au.meb.common.listener.Query;
 import com.au.meb.vaadin.NeedPeopleAdminUI;
 import com.au.meb.vaadin.NeedPeopleListView;
 import com.au.meb.vaadin.NeedPeopleUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 
@@ -52,6 +55,22 @@ public class NeedPeopleMenuView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleSaveView.NAME);
+            }
+        });
+
+        allList.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                VaadinSession.getCurrent().getSession().setAttribute(Query.ALL.name(),Query.ALL);
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
+            }
+        });
+
+        completedRecordList.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                VaadinSession.getCurrent().getSession().setAttribute(Query.COMPLETED.name(),Query.COMPLETED);
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
             }
         });
     }

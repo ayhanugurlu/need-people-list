@@ -1,6 +1,7 @@
 package com.au.meb.dto;
 
 import com.au.meb.common.Gender;
+import com.au.meb.common.RecordState;
 import com.au.meb.common.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,6 @@ public class NeedPeopleDTO {
 
     private String needs;
 
-    //active true
-    private boolean state;
+    private RecordState state;
 
 }

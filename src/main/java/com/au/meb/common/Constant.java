@@ -6,4 +6,8 @@ package com.au.meb.common;
 public interface Constant {
 
     public static String USER_INFO = "USER_INFO";
+
+    public static String QUERY_TYPE_ALL = "QUERY_TYPE_ALL";
+
+    public static String QUERY_TYPE_COMPLETED = "QUERY_TYPE_COMPLETED";
 }
