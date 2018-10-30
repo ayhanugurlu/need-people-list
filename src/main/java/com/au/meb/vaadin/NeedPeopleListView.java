@@ -41,10 +41,10 @@ public class NeedPeopleListView extends VerticalLayout implements View {
 
     private void buildPage() {
 
-        FormLayout formLayout = new FormLayout();
+        GridLayout gridLayout = new GridLayout(2, 2);
+        gridLayout.setSizeFull();
+        this.addComponent(gridLayout);
         this.setSizeFull();
-        this.addComponent(formLayout);
-        formLayout.setWidthUndefined();
 
         if (UI.getCurrent() instanceof NeedPeopleAdminUI) {
             Button managerViewButton = new Button("Yonetici Girisi");
@@ -54,11 +54,17 @@ public class NeedPeopleListView extends VerticalLayout implements View {
                     ((NeedPeopleAdminUI) UI.getCurrent()).router(LoginView.NAME);
                 }
             });
-            formLayout.addComponent(managerViewButton);
+            gridLayout.addComponent(managerViewButton,0,0);
         }
 
-        formLayout.addComponent(needListGrid);
-        this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.addComponent(needListGrid);
+        verticalLayout.setSizeUndefined();
+        gridLayout.addComponent(verticalLayout,1,1);
+
+        this.setSizeUndefined();
+
+        needListGrid.setSizeFull();
 
         List<NeedPeopleDTO> needPeopleList = new ArrayList<>();
         if (VaadinSession.getCurrent().getSession().getAttribute(Query.ALL.name()) != null) {
@@ -110,5 +116,6 @@ public class NeedPeopleListView extends VerticalLayout implements View {
 
 
     }
+
 
 }

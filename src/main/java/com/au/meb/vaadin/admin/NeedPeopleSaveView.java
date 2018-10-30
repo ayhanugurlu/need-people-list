@@ -69,7 +69,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
         footSize.addValueChangeListener(valueChangeListener);
 
         FormLayout formLayout = new FormLayout();
-        this.setSizeFull();
+        this.setSizeUndefined();
         formLayout.setWidthUndefined();
         formLayout.addComponents(listPageButton, needPersonNameText, needPersonSurnameText, needPersonAddress,schoolName,genderRadioButtonGroup,age,sizeRadioButtonGroup,footSize, needListText, saveButton);
         this.addComponent(formLayout);

@@ -7,6 +7,7 @@ import com.au.meb.dto.UserDTO;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,4 +46,5 @@ public class UserServiceImpl implements UserService {
         User user = mapperFacade.map(userDto,User.class);
         userRepository.save(user);
     }
+
 }

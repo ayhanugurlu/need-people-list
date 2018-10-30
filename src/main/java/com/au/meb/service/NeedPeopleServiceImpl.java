@@ -7,6 +7,7 @@ import com.au.meb.dto.NeedPeopleDTO;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +52,16 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
         needPeople.ifPresent(needPeople1 -> {
             needPeople1.setState(recordState);
             needPeopleRepository.save(needPeople1);
+        });
+    }
+
+
+    @Scheduled(fixedDelay = 86400000 )
+    public void updateReserveToActive(){
+        List<NeedPeople>  needPeopleReservedList = needPeopleRepository.findByState(RecordState.RESERVED);
+        needPeopleReservedList.forEach(needPeople -> {
+            needPeople.setState(RecordState.ACTIVE);
+            needPeopleRepository.save(needPeople);
         });
     }
 
