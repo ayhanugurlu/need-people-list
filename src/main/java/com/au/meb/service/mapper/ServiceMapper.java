@@ -1,7 +1,9 @@
 package com.au.meb.service.mapper;
 
+import com.au.meb.db.Charitable;
 import com.au.meb.db.NeedPeople;
 import com.au.meb.db.User;
+import com.au.meb.dto.CharitableDTO;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.dto.UserDTO;
 import ma.glasnost.orika.MapperFactory;
@@ -29,6 +31,14 @@ public class ServiceMapper extends ConfigurableMapper {
 
 
         factory.classMap(User.class, UserDTO.class)
+                .byDefault()
+                .register();
+
+        factory.classMap(Charitable.class, CharitableDTO.class)
+                .byDefault()
+                .register();
+
+        factory.classMap(CharitableDTO.class, Charitable.class)
                 .byDefault()
                 .register();
     }

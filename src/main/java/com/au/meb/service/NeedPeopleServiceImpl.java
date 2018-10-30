@@ -47,7 +47,7 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
     }
 
     @Override
-    public void updateComplete(long id,RecordState recordState) {
+    public void updateState(long id,RecordState recordState) {
         Optional<NeedPeople> needPeople = needPeopleRepository.findById(id);
         needPeople.ifPresent(needPeople1 -> {
             needPeople1.setState(recordState);

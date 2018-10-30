@@ -99,12 +99,12 @@ public class NeedPeopleListView extends VerticalLayout implements View {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     if (userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN) {
-                        needPeopleService.updateComplete(needPeopleDTO.getId(), RecordState.COMPLETED);
+                        needPeopleService.updateState(needPeopleDTO.getId(), RecordState.COMPLETED);
                         ((ListDataProvider) needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
                         needListGrid.getDataProvider().refreshAll();
                         Notification.show("Kayit Tamamlandi", Notification.Type.HUMANIZED_MESSAGE);
                     } else {
-                        needPeopleService.updateComplete(needPeopleDTO.getId(), RecordState.RESERVED);
+                        needPeopleService.updateState(needPeopleDTO.getId(), RecordState.RESERVED);
                         ((ListDataProvider) needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
                         needListGrid.getDataProvider().refreshAll();
                         Notification.show("Kayit Rezerve Edildi", Notification.Type.HUMANIZED_MESSAGE);

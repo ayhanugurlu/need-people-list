@@ -14,6 +14,6 @@ public interface NeedPeopleService {
 
     List<NeedPeopleDTO> list(RecordState state);
 
-    void updateComplete(long id, RecordState recordState);
+    void updateState(long id, RecordState recordState);
 
 }
