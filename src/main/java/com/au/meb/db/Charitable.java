@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by ayhanugurlu on 10/30/18.
@@ -24,6 +22,9 @@ public class Charitable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique=true)
+    private String tck;
+
     private String name;
 
     private String surname;
@@ -33,4 +34,7 @@ public class Charitable {
     private String mail;
 
     private boolean hasStudent;
+
+    @OneToMany
+    private List<NeedPeople> needPeople;
 }

@@ -1,8 +1,11 @@
 package com.au.meb.service;
 
 import com.au.meb.common.RecordState;
+import com.au.meb.db.Charitable;
+import com.au.meb.db.CharitableRepository;
 import com.au.meb.db.NeedPeople;
 import com.au.meb.db.NeedPeopleRepository;
+import com.au.meb.dto.CharitableDTO;
 import com.au.meb.dto.NeedPeopleDTO;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
     @Autowired
     NeedPeopleRepository needPeopleRepository;
 
+    @Autowired
+    CharitableRepository charitableRepository;
+
     @Override
     public void save(NeedPeopleDTO needPeopleDTO) {
 
@@ -47,12 +53,27 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
     }
 
     @Override
-    public void updateState(long id,RecordState recordState) {
+    public void updateState(long id, RecordState recordState, CharitableDTO charitableDTO) {
+
         Optional<NeedPeople> needPeople = needPeopleRepository.findById(id);
-        needPeople.ifPresent(needPeople1 -> {
-            needPeople1.setState(recordState);
-            needPeopleRepository.save(needPeople1);
-        });
+
+        if(charitableDTO == null){
+            needPeople.ifPresent(needPeople1 -> {
+                Optional<Charitable> charitableOptional =  charitableRepository.findByTck(charitableDTO.getTck());
+                Charitable charitable = null;
+                if(!charitableOptional.isPresent()){
+                    charitable = charitableOptional.get();
+                }else{
+                    charitable = mapperFacade.map(charitableDTO,Charitable.class);
+                    charitableRepository.save(charitable);
+                }
+                charitable.getNeedPeople().add(needPeople1);
+
+                needPeople1.setState(recordState);
+                needPeopleRepository.save(needPeople1);
+            });
+        }
+
     }
 
 

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Optional;
 
 /**
  * Created by ayhanugurlu on 10/30/18.
@@ -17,5 +18,5 @@ import javax.persistence.Id;
 
 public interface CharitableRepository  extends JpaRepository<Charitable,Long>{
 
-
+        Optional<Charitable> findByTck(String tck);
 }

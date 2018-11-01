@@ -1,6 +1,7 @@
 package com.au.meb.service;
 
 import com.au.meb.common.RecordState;
+import com.au.meb.dto.CharitableDTO;
 import com.au.meb.dto.NeedPeopleDTO;
 
 import java.util.List;
@@ -14,6 +15,6 @@ public interface NeedPeopleService {
 
     List<NeedPeopleDTO> list(RecordState state);
 
-    void updateState(long id, RecordState recordState);
+    void updateState(long id, RecordState recordState, CharitableDTO charitable);
 
 }
