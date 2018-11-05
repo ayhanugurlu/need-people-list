@@ -1,7 +1,6 @@
 package com.au.meb.vaadin;
 
 import com.au.meb.common.RecordState;
-import com.au.meb.db.Charitable;
 import com.au.meb.dto.CharitableDTO;
 import com.au.meb.service.NeedPeopleService;
 import com.vaadin.ui.*;
