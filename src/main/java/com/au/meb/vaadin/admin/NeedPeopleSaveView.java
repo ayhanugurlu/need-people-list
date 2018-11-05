@@ -31,7 +31,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
     TextField needPersonNameText = new TextField("Ihtiyac Sahibi Adi");
     TextField needPersonSurnameText = new TextField("Ihtiyac Sahibi Soyadi");
     TextArea needPersonAddress = new TextArea("Adress");
-    TextField needListText = new TextField("Ihtiyac Listesi");
+    TextArea needListText = new TextArea("Ihtiyac Listesi");
     TextField schoolName = new TextField("Okul Adi");
     RadioButtonGroup<Gender> genderRadioButtonGroup = new RadioButtonGroup<>("Cinsiyet", Arrays.asList(Gender.values()));
     TextField age = new TextField("Yas");
@@ -68,8 +68,9 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
         age.addValueChangeListener(valueChangeListener);
         footSize.addValueChangeListener(valueChangeListener);
 
-        FormLayout formLayout = new FormLayout();
+
         this.setSizeUndefined();
+        FormLayout formLayout = new FormLayout();
         formLayout.setWidthUndefined();
         formLayout.addComponents(listPageButton, needPersonNameText, needPersonSurnameText, needPersonAddress,schoolName,genderRadioButtonGroup,age,sizeRadioButtonGroup,footSize, needListText, saveButton);
         this.addComponent(formLayout);

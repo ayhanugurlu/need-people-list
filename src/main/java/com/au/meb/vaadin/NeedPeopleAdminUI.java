@@ -38,6 +38,8 @@ public class NeedPeopleAdminUI extends UI {
         navigator.addView(NeedPeopleListView.NAME, NeedPeopleListView.class);
         navigator.addView(NeedPeopleSaveView.NAME, NeedPeopleSaveView.class);
         navigator.addView(NeedPeopleMenuView.NAME, NeedPeopleMenuView.class);
+        navigator.addView(CharitableListView.NAME, CharitableListView.class);
+
         navigator.addView(NeedPeopleSchoolSaveView.NAME, NeedPeopleSchoolSaveView.class);
         navigator.addView(ErrorView.NAME, ErrorView.class);
 

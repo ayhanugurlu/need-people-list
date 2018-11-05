@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,6 +75,36 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
             });
         }
 
+    }
+
+    @Override
+    public NeedPeopleDTO getNeedPeopleDTO(long id) {
+        NeedPeopleDTO needPeopleDTO = null;
+        Optional<NeedPeople> needPeople =  needPeopleRepository.findById(id);
+        if(needPeople.isPresent()){
+            needPeopleDTO =  mapperFacade.map(needPeople.get(),NeedPeopleDTO.class);
+        }
+        return needPeopleDTO;
+    }
+
+    @Override
+    public CharitableDTO getCharitableDTO(long id) {
+        CharitableDTO charitableDTO = null;
+        Optional<NeedPeople> needPeople =  needPeopleRepository.findById(id);
+        if(needPeople.isPresent()&& needPeople.get().getCharitable() != null){
+            charitableDTO =  mapperFacade.map(needPeople.get().getCharitable(),CharitableDTO.class);
+        }
+        return charitableDTO;
+    }
+
+    @Override
+    public List<CharitableDTO> getAllCharitableDTO() {
+        final List<CharitableDTO> charitableDTOs = new ArrayList<>();
+        charitableRepository.findAll().forEach(charitable -> {
+            CharitableDTO  charitableDTO = mapperFacade.map(charitable,CharitableDTO.class);
+            charitableDTOs.add(charitableDTO);
+        });
+        return charitableDTOs;
     }
 
 

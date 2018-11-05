@@ -41,10 +41,8 @@ public class NeedPeopleListView extends VerticalLayout implements View {
 
     private void buildPage() {
 
-        GridLayout gridLayout = new GridLayout(2, 2);
-        gridLayout.setSizeFull();
-        this.addComponent(gridLayout);
-        this.setSizeFull();
+
+        NeedPeopleListView.this.setSizeFull();
 
         if (UI.getCurrent() instanceof NeedPeopleAdminUI) {
             Button managerViewButton = new Button("Yonetici Girisi");
@@ -54,29 +52,16 @@ public class NeedPeopleListView extends VerticalLayout implements View {
                     ((NeedPeopleAdminUI) UI.getCurrent()).router(LoginView.NAME);
                 }
             });
-            gridLayout.addComponent(managerViewButton,0,0);
+            NeedPeopleListView.this.addComponent(managerViewButton);
         }
-
-        VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.addComponent(needListGrid);
-        verticalLayout.setSizeUndefined();
-        gridLayout.addComponent(verticalLayout,1,1);
-
-        this.setSizeUndefined();
+        this.addComponent(needListGrid);
+        this.setHeightUndefined();
+        this.setSpacing(false);
 
         needListGrid.setSizeFull();
 
-        List<NeedPeopleDTO> needPeopleList = new ArrayList<>();
-        if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.ALL) {
-            Arrays.stream(RecordState.values()).forEach(state -> {
-                needPeopleList.addAll(needPeopleService.list(state));
-            });
-        }else if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.COMPLETED) {
-            needPeopleList.addAll(needPeopleService.list(RecordState.COMPLETED));
-        }else{
-            needPeopleList.addAll(needPeopleService.list(RecordState.ACTIVE));
-        }
-        needListGrid.setItems(needPeopleList);
+
+        needListGrid.setItems(loadData());
         needListGrid.addColumn(NeedPeopleDTO::getId).setCaption("Id");
 
 
@@ -98,27 +83,46 @@ public class NeedPeopleListView extends VerticalLayout implements View {
             actionButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
+                    CharitableWindow charitableWindow = null;
                     if (userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN) {
-                        needPeopleService.updateState(needPeopleDTO.getId(), RecordState.COMPLETED,null);
-                        ((ListDataProvider) needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
-                        needListGrid.getDataProvider().refreshAll();
-                        Notification.show("Kayit Tamamlandi", Notification.Type.HUMANIZED_MESSAGE);
-                    } else {
-                        CharitableWindow charitableWindow = new CharitableWindow(needPeopleService,needPeopleDTO.getId());
+
+                        charitableWindow = new CharitableWindow(needPeopleService, needPeopleDTO.getId(), RecordState.COMPLETED);
                         UI.getCurrent().addWindow(charitableWindow);
-                        charitableWindow.addCloseListener(closeEvent ->{
-                            ((ListDataProvider) needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
-                            needListGrid.getDataProvider().refreshAll();
-                        });
+
+                        //needPeopleService.updateState(needPeopleDTO.getId(), RecordState.COMPLETED,null);
+
+
+                    } else {
+                        charitableWindow = new CharitableWindow(needPeopleService, needPeopleDTO.getId(), RecordState.RESERVED);
+                        UI.getCurrent().addWindow(charitableWindow);
                         //needPeopleService.updateState(needPeopleDTO.getId(), RecordState.RESERVED);
 
                     }
+                    charitableWindow.addCloseListener(closeEvent -> {
+                        ((ListDataProvider) needListGrid.getDataProvider()).getItems().remove(needPeopleDTO);
+                        needListGrid.setItems(loadData());
+                        needListGrid.getDataProvider().refreshAll();
+                    });
                 }
             });
             return actionButton;
         });
 
 
+    }
+
+    private List<NeedPeopleDTO>  loadData(){
+        List<NeedPeopleDTO> needPeopleList = new ArrayList<>();
+        if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.ALL) {
+            Arrays.stream(RecordState.values()).forEach(state -> {
+                needPeopleList.addAll(needPeopleService.list(state));
+            });
+        } else if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.COMPLETED) {
+            needPeopleList.addAll(needPeopleService.list(RecordState.COMPLETED));
+        } else {
+            needPeopleList.addAll(needPeopleService.list(RecordState.ACTIVE));
+        }
+        return needPeopleList;
     }
 
 

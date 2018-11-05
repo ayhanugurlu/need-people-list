@@ -17,4 +17,10 @@ public interface NeedPeopleService {
 
     void updateState(long id, RecordState recordState, CharitableDTO charitable);
 
+    NeedPeopleDTO getNeedPeopleDTO(long id);
+
+    CharitableDTO getCharitableDTO(long id);
+
+    List<CharitableDTO> getAllCharitableDTO();
+
 }

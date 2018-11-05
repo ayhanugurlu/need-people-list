@@ -3,6 +3,7 @@ package com.au.meb.vaadin.admin;
 
 import com.au.meb.common.listener.Query;
 import com.au.meb.dto.UserDTO;
+import com.au.meb.vaadin.CharitableListView;
 import com.au.meb.vaadin.NeedPeopleAdminUI;
 import com.au.meb.vaadin.NeedPeopleListView;
 import com.au.meb.vaadin.NeedPeopleUI;
@@ -79,6 +80,13 @@ public class NeedPeopleMenuView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent event) {
                 VaadinSession.getCurrent().getSession().setAttribute(Query.class.getName(),Query.COMPLETED);
                 ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
+            }
+        });
+
+        charitableList.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(CharitableListView.NAME);
             }
         });
         logout.addClickListener(event ->{
