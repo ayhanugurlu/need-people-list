@@ -67,11 +67,11 @@ public class NeedPeopleListView extends VerticalLayout implements View {
         needListGrid.setSizeFull();
 
         List<NeedPeopleDTO> needPeopleList = new ArrayList<>();
-        if (VaadinSession.getCurrent().getSession().getAttribute(Query.ALL.name()) != null) {
+        if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.ALL) {
             Arrays.stream(RecordState.values()).forEach(state -> {
                 needPeopleList.addAll(needPeopleService.list(state));
             });
-        }else if (VaadinSession.getCurrent().getSession().getAttribute(Query.COMPLETED.name()) != null) {
+        }else if (VaadinSession.getCurrent().getSession().getAttribute(Query.class.getName()) == Query.COMPLETED) {
             needPeopleList.addAll(needPeopleService.list(RecordState.COMPLETED));
         }else{
             needPeopleList.addAll(needPeopleService.list(RecordState.ACTIVE));

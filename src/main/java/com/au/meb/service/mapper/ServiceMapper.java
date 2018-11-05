@@ -2,10 +2,12 @@ package com.au.meb.service.mapper;
 
 import com.au.meb.db.Charitable;
 import com.au.meb.db.NeedPeople;
+import com.au.meb.db.NeedSchool;
 import com.au.meb.db.User;
 import com.au.meb.dto.CharitableDTO;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.dto.UserDTO;
+import com.au.meb.vaadin.admin.NeedPeopleSchoolSaveView;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,13 @@ public class ServiceMapper extends ConfigurableMapper {
                 .byDefault()
                 .register();
         factory.classMap(NeedPeople.class, NeedPeopleDTO.class)
+                .byDefault()
+                .register();
+
+        factory.classMap(NeedPeopleDTO.class, NeedSchool.class)
+                .byDefault()
+                .register();
+        factory.classMap(NeedSchool.class, NeedPeopleDTO.class)
                 .byDefault()
                 .register();
 

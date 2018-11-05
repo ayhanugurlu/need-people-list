@@ -25,6 +25,7 @@ public class CharitableWindow extends Window {
         FormLayout formLayout = new FormLayout();
         TextField name = new TextField("isim");
         TextField surname = new TextField("soyisim");
+
         TextField tck = new TextField("tck");
         TextField gsm = new TextField("gsm");
         TextField mail = new TextField("mail");

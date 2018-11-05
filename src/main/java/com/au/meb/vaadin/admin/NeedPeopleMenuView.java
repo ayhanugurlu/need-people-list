@@ -59,10 +59,17 @@ public class NeedPeopleMenuView extends VerticalLayout implements View {
             }
         });
 
+        schoolNewRecord.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleSchoolSaveView.NAME);
+            }
+        });
+
         allList.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                VaadinSession.getCurrent().getSession().setAttribute(Query.ALL.name(),Query.ALL);
+                VaadinSession.getCurrent().getSession().setAttribute(Query.class.getName(),Query.ALL);
                 ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
             }
         });
@@ -70,7 +77,7 @@ public class NeedPeopleMenuView extends VerticalLayout implements View {
         completedRecordList.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                VaadinSession.getCurrent().getSession().setAttribute(Query.COMPLETED.name(),Query.COMPLETED);
+                VaadinSession.getCurrent().getSession().setAttribute(Query.class.getName(),Query.COMPLETED);
                 ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
             }
         });
