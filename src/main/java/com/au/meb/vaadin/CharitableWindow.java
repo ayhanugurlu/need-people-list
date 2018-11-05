@@ -53,7 +53,8 @@ public class CharitableWindow extends Window {
 
         saveButton.addClickListener(event -> {
             CharitableDTO charitableDTO = CharitableDTO.builder().gsm(gsm.getValue()).
-                    hasStudent(hasStudent.getValue()).mail(mail.getValue()).name(name.getValue()).surname(surname.getValue()).build();
+                    hasStudent(hasStudent.getValue()).mail(mail.getValue()).name(name.getValue()).
+                    tck(tck.getValue()).surname(surname.getValue()).build();
             if(charitable != null){
                 charitableDTO.setId(charitable.getId());
             }

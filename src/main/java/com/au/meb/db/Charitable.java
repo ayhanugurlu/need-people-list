@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ayhanugurlu on 10/30/18.
@@ -35,6 +38,13 @@ public class Charitable {
 
     private boolean hasStudent;
 
-    @OneToMany
-    private List<NeedPeople> needPeople;
+    @OneToMany(fetch = FetchType.EAGER,targetEntity = NeedPeople.class)
+    private Set<NeedPeople> needPeople;
+
+    @OneToMany(fetch = FetchType.EAGER,targetEntity = NeedSchool.class)
+    private Set<NeedSchool> needSchool;
+
+
+
+
 }

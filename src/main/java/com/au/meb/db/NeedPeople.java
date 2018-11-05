@@ -44,8 +44,8 @@ public class NeedPeople {
 
     private RecordState state;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "charitable")
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "needPeople")
     private Charitable charitable;
 
 }

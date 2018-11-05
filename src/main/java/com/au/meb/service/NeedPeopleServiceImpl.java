@@ -58,22 +58,21 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
 
         Optional<NeedPeople> needPeople = needPeopleRepository.findById(id);
 
-        if(charitableDTO == null){
+
             needPeople.ifPresent(needPeople1 -> {
                 Optional<Charitable> charitableOptional =  charitableRepository.findByTck(charitableDTO.getTck());
                 Charitable charitable = null;
-                if(!charitableOptional.isPresent()){
+                if(charitableOptional.isPresent()){
                     charitable = charitableOptional.get();
                 }else{
                     charitable = mapperFacade.map(charitableDTO,Charitable.class);
                     charitableRepository.save(charitable);
                 }
-                charitable.getNeedPeople().add(needPeople1);
-
+                needPeople1.setCharitable(charitable);
                 needPeople1.setState(recordState);
                 needPeopleRepository.save(needPeople1);
             });
-        }
+
 
     }
 
@@ -113,7 +112,11 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
         List<NeedPeople>  needPeopleReservedList = needPeopleRepository.findByState(RecordState.RESERVED);
         needPeopleReservedList.forEach(needPeople -> {
             needPeople.setState(RecordState.ACTIVE);
+            Charitable charitable =  needPeople.getCharitable();
+            needPeople.setCharitable(null);
             needPeopleRepository.save(needPeople);
+            //charitable.getUnCompletedNeedPeople().add(needPeople.getId());
+            charitableRepository.save(charitable);
         });
     }
 

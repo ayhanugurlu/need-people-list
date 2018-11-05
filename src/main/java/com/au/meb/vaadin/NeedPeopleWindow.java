@@ -1,68 +1,57 @@
-package com.au.meb.vaadin.admin;
+package com.au.meb.vaadin;
 
 import com.au.meb.common.Gender;
 import com.au.meb.common.RecordState;
 import com.au.meb.common.Size;
-import com.au.meb.common.Utility;
+import com.au.meb.dto.CharitableDTO;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.service.NeedPeopleService;
-import com.au.meb.vaadin.NeedPeopleAdminUI;
-import com.au.meb.vaadin.NeedPeopleListView;
-import com.au.meb.vaadin.NeedPeopleUI;
-import com.vaadin.data.HasValue;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
 /**
- * Created by ayhanugurlu on 10/13/18.
+ * Created by ayhanugurlu on 10/30/18.
  */
-@SpringView(name = NeedPeopleSaveView.NAME)
-public class NeedPeopleSaveView extends VerticalLayout implements View {
-    public static final String NAME = "NeedPeopleSaveView";
+public class NeedPeopleWindow extends Window {
 
 
-    @Autowired
-    NeedPeopleService needPeopleService;
+    private NeedPeopleService needPeopleService;
 
-    TextField needPersonNameText = new TextField("Ihtiyac Sahibi Adi");
-    TextField needPersonSurnameText = new TextField("Ihtiyac Sahibi Soyadi");
-    TextArea needPersonAddress = new TextArea("Adress");
-    TextArea needListText = new TextArea("Ihtiyac Listesi");
-    TextField schoolName = new TextField("Okul Adi");
-    RadioButtonGroup<Gender> genderRadioButtonGroup = new RadioButtonGroup<>("Cinsiyet", Arrays.asList(Gender.values()));
-    TextField age = new TextField("Yas");
-    RadioButtonGroup<Size> sizeRadioButtonGroup = new RadioButtonGroup<>("Size", Arrays.asList(Size.values()));
-    TextField footSize = new TextField("Ayak no");
-    private Button saveButton = new Button("Save");
+    private long needPeopleRecordId;
 
-    private Button listPageButton = new Button("ListPage");
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-
-        buildPage();
-
-    }
-
-    private void buildPage() {
-
-
-        HasValue.ValueChangeListener<String> valueChangeListener = Utility.getValueChangeListener();
-        age.addValueChangeListener(valueChangeListener);
-        footSize.addValueChangeListener(valueChangeListener);
-
-
-        this.setSizeUndefined();
+    public NeedPeopleWindow(NeedPeopleService needPeopleService, long needPeopleRecordId) {
+        NeedPeopleDTO needPeopleDTO = needPeopleService.getNeedPeopleDTO(needPeopleRecordId);
         FormLayout formLayout = new FormLayout();
         formLayout.setWidthUndefined();
-        formLayout.addComponents(listPageButton, needPersonNameText, needPersonSurnameText, needPersonAddress,schoolName,genderRadioButtonGroup,age,sizeRadioButtonGroup,footSize, needListText, saveButton);
-        this.addComponent(formLayout);
-        this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
+        TextField needPersonNameText = new TextField("Ihtiyac Sahibi Adi");
+        TextField needPersonSurnameText = new TextField("Ihtiyac Sahibi Soyadi");
+        TextArea needPersonAddress = new TextArea("Adress");
+        TextArea needListText = new TextArea("Ihtiyac Listesi");
+        TextField schoolName = new TextField("Okul Adi");
+        RadioButtonGroup<Gender> genderRadioButtonGroup = new RadioButtonGroup<>("Cinsiyet", Arrays.asList(Gender.values()));
+        TextField age = new TextField("Yas");
+        RadioButtonGroup<Size> sizeRadioButtonGroup = new RadioButtonGroup<>("Size", Arrays.asList(Size.values()));
+        TextField footSize = new TextField("Ayak no");
+
+        Button saveButton = new Button("Guncelle");
+        Button closeButton = new Button("Vazgec");
+        HorizontalLayout horizontalLayout =new HorizontalLayout();
+        horizontalLayout.addComponents(saveButton,closeButton);
+        formLayout.addComponents(needPersonNameText, needPersonSurnameText, needPersonAddress,
+                schoolName,genderRadioButtonGroup,age,sizeRadioButtonGroup,footSize, needListText, horizontalLayout);
+
+
+        needPersonNameText.setValue(needPeopleDTO.getName());
+        needPersonSurnameText.setValue(needPeopleDTO.getSurname());
+        needListText.setValue(needPeopleDTO.getNeeds());
+        footSize.setValue(""+needPeopleDTO.getFootSize());
+        age.setValue(""+needPeopleDTO.getAge());
+        schoolName.setValue(needPeopleDTO.getSchoolName());
+        genderRadioButtonGroup.setValue(needPeopleDTO.getGender());
+        sizeRadioButtonGroup.setValue(needPeopleDTO.getSize());
+        needPersonAddress.setValue(needPeopleDTO.getAddress());
+
 
         saveButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -80,6 +69,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
                             gender(genderRadioButtonGroup.getSelectedItem().get()).address(needPersonAddress.getValue()).
                             size(sizeRadioButtonGroup.getSelectedItem().get()).age(new Integer(age.getValue())).gender(genderRadioButtonGroup.getSelectedItem().get()).footSize(new Integer(footSize.getValue()))
                             .needs(needListText.getValue()).state(RecordState.ACTIVE).build();
+                    needPeopleDTO.setId(needPeopleRecordId);
                     needPeopleService.save(needPeopleDTO);
                     needPersonNameText.clear();
                     needPersonSurnameText.clear();
@@ -91,6 +81,7 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
                     sizeRadioButtonGroup.clear();
                     needPersonAddress.clear();
                     Notification.show("Kayit Eklendi", Notification.Type.HUMANIZED_MESSAGE);
+                    UI.getCurrent().removeWindow(NeedPeopleWindow.this);
                 } else {
                     Notification.show("Tum alanlar dolu olmali", Notification.Type.HUMANIZED_MESSAGE);
                 }
@@ -98,11 +89,12 @@ public class NeedPeopleSaveView extends VerticalLayout implements View {
             }
         });
 
-        listPageButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                ((NeedPeopleAdminUI) UI.getCurrent()).router(NeedPeopleListView.NAME);
-            }
+        closeButton.addClickListener(event -> {
+            UI.getCurrent().removeWindow(this);
         });
+        formLayout.setSizeUndefined();
+        this.setContent(formLayout);
+        this.center();
     }
+
 }

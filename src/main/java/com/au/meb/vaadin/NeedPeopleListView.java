@@ -108,6 +108,26 @@ public class NeedPeopleListView extends VerticalLayout implements View {
             return actionButton;
         });
 
+        if (userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN) {
+            needListGrid.addComponentColumn(needPeopleDTO ->{
+                Button actionButton = new Button("Guncelle");
+                actionButton.addClickListener(new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(Button.ClickEvent event) {
+                        NeedPeopleWindow needPeopleWindow = new NeedPeopleWindow(needPeopleService,needPeopleDTO.getId());
+                        UI.getCurrent().addWindow(needPeopleWindow);
+                        needPeopleWindow.addCloseListener(closeEvent ->{
+                            needListGrid.setItems(loadData());
+                            needListGrid.getDataProvider().refreshAll();
+                        });
+
+
+                    }
+                });
+                return  actionButton;
+            });
+        }
+
 
     }
 
