@@ -67,9 +67,10 @@ public class CharitableListView extends VerticalLayout implements View {
         charitableListGrid.addColumn(CharitableDTO::getMail).setCaption("Mail");
         charitableListGrid.addColumn(CharitableDTO::getGsm).setCaption("Gsm");
 
+        CharitableListView.this.addComponent(charitableListGrid);
+
         charitableListGrid.setData(needPeopleService.getAllCharitableDTO());
 
-        CharitableListView.this.addComponent(charitableListGrid);
 
 
 

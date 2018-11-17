@@ -80,14 +80,22 @@ public class NeedPeopleListView extends VerticalLayout implements View {
         }
         needListGrid.addComponentColumn(needPeopleDTO -> {
             Button actionButton = new Button(buttonCaption);
+            if(buttonCaption.equals("Tamamla") && needPeopleDTO.getState()==RecordState.COMPLETED){
+                actionButton.setCaption("Aktive Et");
+            }
+
             actionButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     CharitableWindow charitableWindow = null;
                     if (userDTO != null && userDTO.getAuthority() == AuthrityType.ADMIN) {
+                        if(needPeopleDTO.getState() == RecordState.COMPLETED){
+                            needPeopleService.updateState(needPeopleDTO.getId(),RecordState.ACTIVE,null);
+                        }else{
+                            charitableWindow = new CharitableWindow(needPeopleService, needPeopleDTO.getId(), RecordState.COMPLETED);
+                            UI.getCurrent().addWindow(charitableWindow);
 
-                        charitableWindow = new CharitableWindow(needPeopleService, needPeopleDTO.getId(), RecordState.COMPLETED);
-                        UI.getCurrent().addWindow(charitableWindow);
+                        }
 
                         //needPeopleService.updateState(needPeopleDTO.getId(), RecordState.COMPLETED,null);
 
