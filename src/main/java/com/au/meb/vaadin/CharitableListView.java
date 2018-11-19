@@ -42,11 +42,7 @@ public class CharitableListView extends VerticalLayout implements View {
 
     private void buildPage() {
 
-
-
-
         CharitableListView.this.setSizeFull();
-
         if (UI.getCurrent() instanceof NeedPeopleAdminUI) {
             Button managerViewButton = new Button("Yonetici Girisi");
             managerViewButton.addClickListener(new Button.ClickListener() {
@@ -60,23 +56,13 @@ public class CharitableListView extends VerticalLayout implements View {
         this.setHeightUndefined();
         this.setSpacing(false);
         charitableListGrid.setSizeFull();
-
         charitableListGrid.addColumn(CharitableDTO::getName).setCaption("Name");
         charitableListGrid.addColumn(CharitableDTO::getSurname).setCaption("Surname");
         charitableListGrid.addColumn(CharitableDTO::getTck).setCaption("Tck");
         charitableListGrid.addColumn(CharitableDTO::getMail).setCaption("Mail");
         charitableListGrid.addColumn(CharitableDTO::getGsm).setCaption("Gsm");
-
+        charitableListGrid.setItems(needPeopleService.getAllCharitableDTO());
         CharitableListView.this.addComponent(charitableListGrid);
-
-        charitableListGrid.setData(needPeopleService.getAllCharitableDTO());
-
-
-
-
-
-
-
     }
 
 
