@@ -115,7 +115,6 @@ public class NeedPeopleServiceImpl implements NeedPeopleService {
             Charitable charitable =  needPeople.getCharitable();
             needPeople.setCharitable(null);
             needPeopleRepository.save(needPeople);
-            //charitable.getUnCompletedNeedPeople().add(needPeople.getId());
             charitableRepository.save(charitable);
         });
     }
