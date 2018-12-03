@@ -1,6 +1,7 @@
 package com.au.meb.vaadin.admin;
 
 import com.au.meb.common.AuthrityType;
+import com.au.meb.common.Utility;
 import com.au.meb.common.exception.AuthenticationException;
 import com.au.meb.db.NeedPeople;
 import com.au.meb.dto.UserDTO;
@@ -10,10 +11,15 @@ import com.au.meb.vaadin.NeedPeopleListView;
 import com.au.meb.vaadin.NeedPeopleUI;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by ayhanugurlu on 10/13/18.
@@ -46,8 +52,19 @@ public class LoginView extends VerticalLayout implements View {
     public void buildPage() {
         FormLayout formLayout = new FormLayout();
         this.setSizeFull();
+
+        Image image = Utility.getImage("/static/logo.png");
+        this.addComponent(image);
+        this.setComponentAlignment(image,Alignment.MIDDLE_CENTER);
+
+
         formLayout.setWidthUndefined();
         this.addComponent(formLayout);
+
+
+
+
+
         formLayout.addComponents(userNameInput, passwordInput, loginButton);
         this.setComponentAlignment(formLayout, Alignment.MIDDLE_CENTER);
 

@@ -1,7 +1,9 @@
 package com.au.meb.vaadin;
 
 import com.au.meb.common.AuthrityType;
+import com.au.meb.common.Gender;
 import com.au.meb.common.RecordState;
+import com.au.meb.common.Utility;
 import com.au.meb.common.listener.Query;
 import com.au.meb.dto.NeedPeopleDTO;
 import com.au.meb.dto.UserDTO;
@@ -10,11 +12,15 @@ import com.au.meb.vaadin.admin.LoginView;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,9 +60,17 @@ public class NeedPeopleListView extends VerticalLayout implements View {
             });
             NeedPeopleListView.this.addComponent(managerViewButton);
         }
+
+        Image image = Utility.getImage("/static/logo.png");
+        this.addComponent(image);
+        this.setComponentAlignment(image,Alignment.MIDDLE_CENTER);
+
         this.addComponent(needListGrid);
         this.setHeightUndefined();
         this.setSpacing(false);
+
+
+
 
         needListGrid.setSizeFull();
 
@@ -68,6 +82,15 @@ public class NeedPeopleListView extends VerticalLayout implements View {
         UserDTO userDTO = UI.getCurrent().getSession().getAttribute(UserDTO.class);
 
         needListGrid.addColumn(NeedPeopleDTO::getAddress).setCaption("Adress");
+        needListGrid.addColumn(needPeopleDTO -> {
+            if(needPeopleDTO.getGender()== Gender.M){
+                return  "Erkek";
+            }else{
+                return  "Kadin";
+            }
+        }).setCaption("Ihtiyac Listesi");
+        needListGrid.addColumn(NeedPeopleDTO::getSize).setCaption("Beden");
+        needListGrid.addColumn(NeedPeopleDTO::getFootSize).setCaption("Ayak Numarasi");
         needListGrid.addColumn(NeedPeopleDTO::getNeeds).setCaption("Ihtiyac Listesi");
 
         final String buttonCaption;
